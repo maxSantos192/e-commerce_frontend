@@ -1,7 +1,7 @@
 function ErrorPage() {
   return (
     <div>
-      <h1>ERROR PAGE</h1>
+      <h1>PAGINA DE ERRO</h1>
     </div>
   );
 }
