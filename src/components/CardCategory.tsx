@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { CategoryProps } from '../types/categoryTypes';
 import api from '../services/api';
-import { Link } from 'react-router-dom';
 
 function CardCategory() {
   const [categories, setCategories] = useState<CategoryProps[]>([]);
 
   useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await api.get('/category');
+        setCategories(response?.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await api.get('/category');
-      setCategories(response?.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <div

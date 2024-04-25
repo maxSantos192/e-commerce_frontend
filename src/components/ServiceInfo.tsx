@@ -3,7 +3,7 @@ import guarantee from '../assets/icons/guarantee.svg';
 import shipping from '../assets/icons/shipping.svg';
 import support from '../assets/icons/support.svg';
 
-const ServiceInfo = () => {
+function ServiceInfo() {
   const features = [
     {
       icon: trophy,
@@ -28,7 +28,7 @@ const ServiceInfo = () => {
   ];
 
   return (
-    <div className='mt-16 flex w-full justify-center bg-minfo py-20'>
+    <section className='mt-16 flex w-full justify-center bg-minfo py-20'>
       <div className='mx-auto flex w-full max-w-7xl justify-center px-8'>
         <div className='grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4'>
           {features.map((feature, index) => (
@@ -49,8 +49,8 @@ const ServiceInfo = () => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
-};
+}
 
 export default ServiceInfo;
