@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { PiCirclesFourFill } from 'react-icons/pi';
 import { TbAdjustmentsHorizontal } from 'react-icons/tb';
 import { BsViewList } from 'react-icons/bs';
+import { IoIosArrowForward } from 'react-icons/io';
 import api from '../services/api';
 import CardProduct from '../components/CardProduct';
 import { ProductProps } from '../types/productTypes';
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 function Shop() {
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -37,15 +43,47 @@ function Shop() {
     fecthData();
   }, [page, categoryIds, limitItem, orderBy]);
 
+  function handlePageChange(event: any, value: SetStateAction<number>) {
+    setPage(value);
+  }
+
+  const buttonSx = {
+    padding: 2,
+    fontSize: '18px',
+    border: 'none',
+    borderRadius: 3,
+    backgroundColor: '#F9F1E7',
+    color: 'black', // Cor da fonte para botão não selecionado
+    '&.Mui-disabled': {
+      backgroundColor: '#f9f9f9', // Cor de fundo quando desabilitado
+      color: '#ccc', // Cor da fonte quando desabilitado
+    },
+    '&:hover': {
+      backgroundColor: '#F9F1E7', // Mantém a cor de fundo ao passar o mouse
+      color: 'black', // Mantém a cor da fonte ao passar o mouse
+    },
+  };
+
   return (
     <section>
       <div className='relative h-40 w-full md:h-72'>
+        <div className='absolute flex h-full w-full flex-col items-center justify-center'>
+          <h1 className='text-5xl font-medium'>Shop</h1>
+          <div className='flex items-center justify-center p-2'>
+            <a href='/' className='font-medium'>
+              Home{' '}
+            </a>
+            <IoIosArrowForward />
+            <p className='text-right'> Shop</p>
+          </div>
+        </div>
         <img
-          className='absolute inset-0 h-full w-full object-cover'
+          className='inset-0 h-full w-full object-cover'
           src='https://i.postimg.cc/wB3KWrZb/ff74c027a1888544144abe4be6e02cbf.jpg'
           alt='shop banner'
         />
       </div>
+
       <div className='flex h-auto w-full bg-mfilter md:h-24'>
         <div className='mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-3 md:flex-row'>
           <div className='flex flex-row items-center justify-center gap-4 '>
@@ -54,8 +92,8 @@ function Shop() {
               className='flex items-center justify-center'
             >
               <TbAdjustmentsHorizontal size={24} color='#000' />
+              <p className='ml-1'>Filter</p>
             </button>
-            <p>Filter</p>
             <button onClick={() => setIsCol(false)}>
               <PiCirclesFourFill size={24} color='#000' />
             </button>
@@ -74,7 +112,7 @@ function Shop() {
               <option value={16}>16</option>
               <option value={8}>8</option>
             </select>
-            <span className='text-sm md:text-base'>Short by</span>
+            <span className='text-sm md:text-base'>Sort by</span>
             <select
               value={orderBy}
               onChange={e => setOrderBy(e.target.value)}
@@ -89,7 +127,7 @@ function Shop() {
         </div>
       </div>
 
-      <div className='flex items-center justify-center'>
+      <div className='my-14 flex items-center justify-center'>
         <div className='grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4'>
           {products.map(product => (
             <CardProduct key={product.id} {...product} />
@@ -97,7 +135,58 @@ function Shop() {
         </div>
       </div>
 
-      <div></div>
+      <Box display='flex' alignItems='center' justifyContent='center'>
+        <Button
+          variant='outlined'
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+          sx={buttonSx}
+          aria-label='Previous page'
+        >
+          Prev
+        </Button>
+
+        <Pagination
+          variant='outlined'
+          shape='rounded'
+          count={totalPages}
+          page={page}
+          onChange={handlePageChange}
+          renderItem={item =>
+            item.type === 'previous' || item.type === 'next' ? null : (
+              <PaginationItem {...item} />
+            )
+          }
+          sx={{
+            '& .MuiPaginationItem-root': {
+              width: 60,
+              height: 60,
+              margin: '0 10px',
+              fontSize: '20px',
+              border: 'none',
+              borderRadius: 3,
+            },
+            '& .Mui-selected, & .Mui-selected:hover': {
+              backgroundColor: '#B88E2F !important',
+              color: 'white !important',
+            },
+            '& .MuiPaginationItem-page, & .MuiPaginationItem-page:hover': {
+              backgroundColor: '#F9F1E7',
+              color: 'black',
+            },
+          }}
+        />
+
+        <Button
+          variant='outlined'
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+          sx={buttonSx}
+          aria-label='Next page'
+        >
+          Next
+        </Button>
+      </Box>
     </section>
   );
 }
