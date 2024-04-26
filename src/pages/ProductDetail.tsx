@@ -12,33 +12,52 @@ function ProductDetail() {
   const [product, setProduct] = useState<ProductProps>();
   const [relatedProducts, setRelatedProducts] = useState<ProductProps[]>([]);
   const [categoryName, setCategoryName] = useState('');
+  const [limitItems, setLimitItems] = useState<number>(4);
+  const [amount, setAmount] = useState<number>(1);
   const { id } = useParams();
 
   useEffect(() => {
-    fetchData();
-  }, [id]);
+    async function fetchData() {
+      try {
+        const response = await api.get(`/product/${id}`);
+        setProduct(response?.data);
 
-  async function fetchData() {
-    try {
-      const response = await api.get(`/product/${id}`);
-      setProduct(response?.data);
+        if (response.data?.category_id) {
+          const categoryResponse = await api.get(
+            `/category/${response.data.category_id}`
+          );
+          setCategoryName(categoryResponse.data.name);
+        }
 
-      if (response.data?.category_id) {
-        const categoryResponse = await api.get(
-          `/category/${response.data.category_id}`
-        );
-        setCategoryName(categoryResponse.data.name);
+        if (response.data?.category_id) {
+          const relatedResponse = await api.get(`/product/category`, {
+            params: {
+              categoryId: response.data.category_id,
+              limit: limitItems,
+            },
+          });
+          setRelatedProducts(relatedResponse.data);
+        }
+      } catch (err) {
+        console.error(err);
       }
-
-      if (response.data?.category_id) {
-        const relatedResponse = await api.get(`/product/category`, {
-          params: { categoryId: response.data.category_id, limit: 4 },
-        });
-        setRelatedProducts(relatedResponse.data);
-      }
-    } catch (err) {
-      console.error(err);
     }
+
+    fetchData();
+  }, [id, limitItems]);
+
+  function handleShowMore() {
+    if (limitItems === 8) {
+      return;
+    }
+    setLimitItems(limitItems * 2);
+  }
+
+  function handleAmount() {
+    if (amount <= 1) {
+      return;
+    }
+    setAmount(amount - 1);
   }
 
   return (
@@ -75,7 +94,7 @@ function ProductDetail() {
             <span className='text-2xl text-mline'>Rs. {product?.price}</span>
 
             <div className='my-2 flex items-center gap-4'>
-              <Rating name='simple-controlled' />
+              <Rating name='simple-controlled' value={3} />
               <div className=' block h-9 w-[2px] bg-mline'></div>
               <span className='text-[13px] text-mline'>5 Customer Review</span>
             </div>
@@ -93,16 +112,30 @@ function ProductDetail() {
 
             <p className='pt-3 text-sm text-mline'>Color</p>
             <div className='space-x-4'>
-              <button className='bg-mpurple h-7 w-7 rounded-full'></button>
+              <button className='h-7 w-7 rounded-full bg-mpurple'></button>
               <button className='h-7 w-7 rounded-full bg-mblack'></button>
               <button className='h-7 w-7 rounded-full bg-mgold'></button>
             </div>
 
             <div className='flex flex-col gap-4 pb-9 pt-3 md:flex-row'>
               <div className='flex items-center justify-center gap-4 rounded-xl border border-mline py-4 md:w-32'>
-                <button className='h-full w-full'>-</button>
-                <span>1</span>
-                <button className='h-full w-full'>+</button>
+                <button
+                  className='h-full w-full'
+                  onClick={e => {
+                    if (amount > 1) {
+                      setAmount(amount - 1);
+                    }
+                  }}
+                >
+                  -
+                </button>
+                <span>{amount}</span>
+                <button
+                  className='h-full w-full'
+                  onClick={e => setAmount(amount + 1)}
+                >
+                  +
+                </button>
               </div>
               <button className='rounded-xl border border-mblack px-5 py-3 text-xl'>
                 Add To Cart
@@ -184,6 +217,13 @@ function ProductDetail() {
               <CardProduct key={product.id} {...product} />
             ))}
           </div>
+
+          <button
+            className='border-2 px-10 py-2 text-mgold'
+            onClick={handleShowMore}
+          >
+            Show more
+          </button>
         </div>
       </Container>
     </>

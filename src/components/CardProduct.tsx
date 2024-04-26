@@ -6,12 +6,12 @@ import { ProductProps } from '../types/productTypes';
 interface ItemProps {
   icon: JSX.Element;
   label: string;
-  fclick: () => void;
+  fClick: () => void;
 }
 
-function ActionItem({ icon, label, fclick }: ItemProps) {
+function ActionItem({ icon, label, fClick }: ItemProps) {
   return (
-    <button onClick={fclick} className='flex items-center gap-1'>
+    <button onClick={fClick} className='flex items-center gap-1'>
       {icon}
       <p className='text-base font-semibold text-mwhite'>{label}</p>
     </button>
@@ -23,17 +23,17 @@ function CardProduct(product: ProductProps) {
     {
       icon: <RiShareFill size={16} color='#FFF' />,
       label: 'Share',
-      fclick: () => {},
+      fClick: () => {},
     },
     {
       icon: <RiArrowLeftRightFill size={16} color='#FFF' />,
       label: 'Compare',
-      fclick: () => {},
+      fClick: () => {},
     },
     {
       icon: <FaRegHeart size={16} color='#FFF' />,
       label: 'Like',
-      fclick: () => {},
+      fClick: () => {},
     },
   ];
 

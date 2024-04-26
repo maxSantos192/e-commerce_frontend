@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Container from '../components/Container';
 import { ProductProps } from '../types/productTypes';
 import ServiceInfo from '../components/ServiceInfo';
 import CardCategory from '../components/CardCategory';
 import api from '../services/api';
 import CardProduct from '../components/CardProduct';
+import { Link } from 'react-router-dom';
 
 function Home() {
-  const navigate = useNavigate();
   const [products, setProducts] = useState<ProductProps[]>([]);
 
   useEffect(() => {
@@ -23,10 +22,6 @@ function Home() {
 
     fetchData();
   }, []);
-
-  function handleShowMore() {
-    navigate('/shop');
-  }
 
   return (
     <>
@@ -63,12 +58,9 @@ function Home() {
               ))}
             </div>
           </div>
-          <button
-            onClick={handleShowMore}
-            className='border-2 px-10 py-2 text-mgold'
-          >
+          <Link to={'/shop'} className='border-2 px-10 py-2 text-mgold'>
             Show More
-          </button>
+          </Link>
         </section>
       </Container>
       <ServiceInfo />

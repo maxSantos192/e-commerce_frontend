@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PiCirclesFourFill } from 'react-icons/pi';
 import { TbAdjustmentsHorizontal } from 'react-icons/tb';
 import { BsViewList } from 'react-icons/bs';
@@ -19,6 +19,7 @@ function Shop() {
   const [totalPages, setTotalPages] = useState(0);
   const [pageInfo, setPageInfo] = useState('');
   const [categoryIds, setCategoryIds] = useState<number[]>([]);
+  const [checkedCategories, setCheckedCategories] = useState<number[]>([]);
   const [limitItem, setLimitItem] = useState<number>(16);
   const [orderBy, setOrderBy] = useState('');
   const [isCol, setIsCol] = useState<boolean>(false);
@@ -50,7 +51,7 @@ function Shop() {
     setFilterOpen(false);
   };
 
-  function handlePageChange(event: any, value: SetStateAction<number>) {
+  function handlePageChange(event: any, value: number) {
     setPage(value);
   }
 
@@ -60,14 +61,14 @@ function Shop() {
     border: 'none',
     borderRadius: 3,
     backgroundColor: '#F9F1E7',
-    color: 'black', // Cor da fonte para botão não selecionado
+    color: 'black',
     '&.Mui-disabled': {
-      backgroundColor: '#f9f9f9', // Cor de fundo quando desabilitado
-      color: '#ccc', // Cor da fonte quando desabilitado
+      backgroundColor: '#f9f9f9',
+      color: '#ccc',
     },
     '&:hover': {
-      backgroundColor: '#F9F1E7', // Mantém a cor de fundo ao passar o mouse
-      color: 'black', // Mantém a cor da fonte ao passar o mouse
+      backgroundColor: '#F9F1E7',
+      color: 'black',
     },
   };
 
@@ -102,7 +103,13 @@ function Shop() {
                 <TbAdjustmentsHorizontal size={24} color='#000' />
                 <p className='ml-1'>Filter</p>
               </button>
-              {filterOpen && <FilterPopover onApply={handleApplyCategories} />}
+              {filterOpen && (
+                <FilterPopover
+                  onApply={handleApplyCategories}
+                  checkedCategories={checkedCategories}
+                  setCheckedCategories={setCheckedCategories}
+                />
+              )}
             </div>
 
             <button onClick={() => setIsCol(false)}>
@@ -122,6 +129,7 @@ function Shop() {
             >
               <option value={16}>16</option>
               <option value={8}>8</option>
+              <option value={4}>4</option>
             </select>
             <span className='text-sm md:text-base'>Sort by</span>
             <select
