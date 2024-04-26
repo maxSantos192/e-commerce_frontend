@@ -22,6 +22,7 @@ export default {
       'mline': '#D9D9D9',
       'mdiscount': '#B0B0B0',
       'mline': '#9F9F9F',
+      'mpurple': '#816DFA',
     },
   },
   plugins: [],

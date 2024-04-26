@@ -41,7 +41,7 @@ function CardProduct(product: ProductProps) {
     <div className='group relative h-fit w-[285px]'>
       <div className='absolute hidden h-full w-full flex-col items-center justify-center transition-all duration-500 hover:bg-mblack/50 group-hover:flex'>
         <Link
-          to={`product/${product.id}`}
+          to={`/product/${product.id}`}
           className='bg-mwhite px-12 py-3 text-base font-semibold text-mgold'
         >
           See Details
@@ -80,7 +80,7 @@ function CardProduct(product: ProductProps) {
         <div className='flex justify-between'>
           <strong className='text-xl text-msubtitle'>Rp {product.price}</strong>
           {product.discount_price && (
-            <del className='text-mdiscount text-base'>
+            <del className='text-base text-mdiscount'>
               Rp {product.discount_price}
             </del>
           )}

@@ -1,12 +1,27 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
+import { ReactNode, useEffect } from 'react';
 
-function Layout() {
+interface LayoutProps {
+  children?: ReactNode;
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
+function Layout({ children }: LayoutProps) {
   return (
     <>
+      <ScrollToTop />
       <Header />
-      <Outlet />
+      {children ? children : <Outlet />}
       <Footer />
     </>
   );

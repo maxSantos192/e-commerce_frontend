@@ -8,6 +8,7 @@ import {
   AiOutlineHeart,
   AiOutlineShoppingCart,
 } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 type MenuItem = {
   url: string;
@@ -26,24 +27,24 @@ function Header() {
 
   const navItem = (item: MenuItem, index: number) => (
     <li key={`menu-item-${index}`} className='inline-block px-6'>
-      <a
-        href={item.url}
+      <Link
+        to={item.url}
         className='hover:text-zinc-600 text-base font-medium transition-all'
       >
         {item.label}
-      </a>
+      </Link>
     </li>
   );
 
   return (
     <div className='flex h-16 w-full items-center justify-center'>
       <header className='relative flex w-full max-w-7xl items-center justify-between bg-mwhite px-8'>
-        <a href='/' className='hidden cursor-pointer lg:block'>
+        <Link to={'/'} className='hidden cursor-pointer lg:block'>
           <img src={furniroLogo} alt='Funiro Logo' />
-        </a>
-        <a href='/' className='z-30 cursor-pointer lg:hidden'>
+        </Link>
+        <Link to={'/'} className='z-30 cursor-pointer lg:hidden'>
           <img src={logo} alt='Funiro Logo' />
-        </a>
+        </Link>
 
         <nav className='hidden md:block'>
           <ul className='list-none'>
@@ -83,7 +84,7 @@ function Header() {
                     key={`mobile-menu-item-${index}`}
                     className='hover:bg-slate-100 flex h-16 items-center px-4 text-base font-medium hover:shadow'
                   >
-                    <a href={item.url}>{item.label}</a>
+                    <Link to={item.url}>{item.label}</Link>
                   </li>
                 ))}
               </ul>

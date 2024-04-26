@@ -8,9 +8,10 @@ import CardProduct from '../components/CardProduct';
 import { ProductProps } from '../types/productTypes';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { Link } from 'react-router-dom';
+import FilterPopover from '../components/FilterPopover';
 
 function Shop() {
   const [products, setProducts] = useState<ProductProps[]>([]);
@@ -20,7 +21,8 @@ function Shop() {
   const [categoryIds, setCategoryIds] = useState<number[]>([]);
   const [limitItem, setLimitItem] = useState<number>(16);
   const [orderBy, setOrderBy] = useState('');
-  const [isCol, setIsCol] = useState(false);
+  const [isCol, setIsCol] = useState<boolean>(false);
+  const [filterOpen, setFilterOpen] = useState<boolean>(false);
 
   useEffect(() => {
     async function fecthData() {
@@ -42,6 +44,11 @@ function Shop() {
     }
     fecthData();
   }, [page, categoryIds, limitItem, orderBy]);
+
+  const handleApplyCategories = (selectedCategories: number[]) => {
+    setCategoryIds(selectedCategories);
+    setFilterOpen(false);
+  };
 
   function handlePageChange(event: any, value: SetStateAction<number>) {
     setPage(value);
@@ -65,14 +72,14 @@ function Shop() {
   };
 
   return (
-    <section>
-      <div className='relative h-40 w-full md:h-72'>
+    <>
+      <section className='relative h-40 w-full md:h-72'>
         <div className='absolute flex h-full w-full flex-col items-center justify-center'>
           <h1 className='text-5xl font-medium'>Shop</h1>
           <div className='flex items-center justify-center p-2'>
-            <a href='/' className='font-medium'>
-              Home{' '}
-            </a>
+            <Link to={'/'} className='font-medium'>
+              Home
+            </Link>
             <IoIosArrowForward />
             <p className='text-right'> Shop</p>
           </div>
@@ -82,18 +89,22 @@ function Shop() {
           src='https://i.postimg.cc/wB3KWrZb/ff74c027a1888544144abe4be6e02cbf.jpg'
           alt='shop banner'
         />
-      </div>
+      </section>
 
-      <div className='flex h-auto w-full bg-mfilter md:h-24'>
+      <section className='flex h-auto w-full bg-mfilter md:h-20'>
         <div className='mx-auto flex w-full max-w-7xl flex-col items-center justify-between p-3 md:flex-row'>
           <div className='flex flex-row items-center justify-center gap-4 '>
-            <button
-              onClick={() => {}}
-              className='flex items-center justify-center'
-            >
-              <TbAdjustmentsHorizontal size={24} color='#000' />
-              <p className='ml-1'>Filter</p>
-            </button>
+            <div className='flex'>
+              <button
+                onClick={() => setFilterOpen(!filterOpen)}
+                className='flex items-center justify-center'
+              >
+                <TbAdjustmentsHorizontal size={24} color='#000' />
+                <p className='ml-1'>Filter</p>
+              </button>
+              {filterOpen && <FilterPopover onApply={handleApplyCategories} />}
+            </div>
+
             <button onClick={() => setIsCol(false)}>
               <PiCirclesFourFill size={24} color='#000' />
             </button>
@@ -125,15 +136,15 @@ function Shop() {
             </select>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className='my-14 flex items-center justify-center'>
+      <section className='my-14 flex items-center justify-center'>
         <div className='grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4'>
           {products.map(product => (
             <CardProduct key={product.id} {...product} />
           ))}
         </div>
-      </div>
+      </section>
 
       <Box display='flex' alignItems='center' justifyContent='center'>
         <Button
@@ -187,7 +198,7 @@ function Shop() {
           Next
         </Button>
       </Box>
-    </section>
+    </>
   );
 }
 
