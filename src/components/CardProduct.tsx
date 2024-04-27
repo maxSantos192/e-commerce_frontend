@@ -78,7 +78,9 @@ function CardProduct(product: ProductProps) {
         </h2>
         <span className='text-base text-mspan'>{product.description}</span>
         <div className='flex justify-between'>
-          <strong className='text-xl text-msubtitle'>Rp {product.price}</strong>
+          <strong className='text-xl text-msubtitle'>
+            Rp {product.total_price}
+          </strong>
           {product.discount_price && (
             <del className='text-base text-mdiscount'>
               Rp {product.discount_price}

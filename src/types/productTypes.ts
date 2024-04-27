@@ -8,7 +8,8 @@ export interface ProductProps {
   price: string;
   discount_price?: string;
   discount_percent?: number;
+  total_price: number;
   is_new: boolean;
   image_link?: string;
-  other_images_link?: string;
+  other_images_link?: string[];
 }

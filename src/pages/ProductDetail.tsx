@@ -14,6 +14,7 @@ function ProductDetail() {
   const [categoryName, setCategoryName] = useState('');
   const [limitItems, setLimitItems] = useState<number>(4);
   const [amount, setAmount] = useState<number>(1);
+  const [selectedImage, setSelectedImage] = useState('');
   const { id } = useParams();
 
   useEffect(() => {
@@ -27,6 +28,10 @@ function ProductDetail() {
             `/category/${response.data.category_id}`
           );
           setCategoryName(categoryResponse.data.name);
+        }
+
+        if (response.data?.other_images_link?.length > 0) {
+          setSelectedImage(response.data?.other_images_link[0]);
         }
 
         if (response.data?.category_id) {
@@ -53,13 +58,6 @@ function ProductDetail() {
     setLimitItems(limitItems * 2);
   }
 
-  function handleAmount() {
-    if (amount <= 1) {
-      return;
-    }
-    setAmount(amount - 1);
-  }
-
   return (
     <>
       <div className='flex h-auto w-full bg-mfilter md:h-20'>
@@ -80,16 +78,30 @@ function ProductDetail() {
       </div>
 
       <Container>
-        <div className='mt-10 flex flex-col justify-center gap-20 md:flex-row'>
-          <div className='md:max-h-[27rem]'>
-            <img
-              className='h-full w-full object-cover'
-              src={product?.image_link}
-              alt={`product ${product?.name}`}
-            />
+        <div className='mt-10 flex flex-col justify-center gap-5 md:flex-row md:gap-10 lg:gap-20'>
+          <div className='flex w-full flex-1 flex-col-reverse gap-5 md:max-h-[27rem] lg:flex-row'>
+            <div className='flex flex-row justify-center gap-4 md:flex-row lg:flex-col lg:justify-start'>
+              {product?.other_images_link?.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Thumbnail ${index}`}
+                  className={`h-16 w-16 cursor-pointer rounded-lg object-cover ${selectedImage === image ? 'ring-2 ring-mgold' : 'opacity-50'}`}
+                  onClick={() => setSelectedImage(image)}
+                />
+              ))}
+            </div>
+
+            <div className='w-full flex-shrink-0 md:w-auto'>
+              <img
+                src={selectedImage}
+                alt='Selected Product'
+                className='h-auto w-full object-cover md:w-96'
+              />
+            </div>
           </div>
 
-          <div className='space-y-2'>
+          <div className='flex-1 flex-col space-y-2 md:w-auto'>
             <h1 className='text-[42px] text-mblack'>{product?.name}</h1>
             <span className='text-2xl text-mline'>Rs. {product?.price}</span>
 
