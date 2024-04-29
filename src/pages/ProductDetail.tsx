@@ -13,6 +13,7 @@ function ProductDetail() {
   const [product, setProduct] = useState<ProductProps>();
   const [relatedProducts, setRelatedProducts] = useState<ProductProps[]>([]);
   const [categoryName, setCategoryName] = useState('');
+  const [categoryId, setCategoryId] = useState();
   const [limitItems, setLimitItems] = useState<number>(4);
   const [amount, setAmount] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState('');
@@ -31,6 +32,7 @@ function ProductDetail() {
             `/category/${response.data.category_id}`
           );
           setCategoryName(categoryResponse.data.name);
+          setCategoryId(categoryResponse.data.id);
         }
 
         if (response.data?.other_images_link?.length > 0) {
@@ -56,7 +58,7 @@ function ProductDetail() {
 
   function handleShowMore() {
     if (limitItems >= 8) {
-      navigate('/shop');
+      navigate(`/shop/${categoryId}`);
     }
     setLimitItems(limitItems * 2);
   }
@@ -158,7 +160,7 @@ function ProductDetail() {
                   +
                 </button>
               </div>
-              <button className='hover:bg-mbuy rounded-xl border border-mblack px-5 py-3 text-xl transition-all hover:border-mwhite hover:text-mwhite'>
+              <button className='rounded-xl border border-mblack px-5 py-3 text-xl transition-all hover:border-mwhite hover:bg-mbuy hover:text-mwhite'>
                 Add To Cart
               </button>
               <button className='rounded-xl border border-mblack px-5 py-3 text-xl transition-all hover:border-mwhite hover:bg-mgold hover:text-mwhite'>
