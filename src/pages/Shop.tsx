@@ -95,7 +95,7 @@ function Shop() {
         </div>
         <img
           className='inset-0 h-full w-full object-cover'
-          src='https://i.postimg.cc/wB3KWrZb/ff74c027a1888544144abe4be6e02cbf.jpg'
+          src='https://i.postimg.cc/W1vJrn5z/shop-banner.png'
           alt='shop banner'
         />
       </section>
