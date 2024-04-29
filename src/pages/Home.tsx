@@ -24,7 +24,7 @@ function Home() {
   }, []);
 
   return (
-    <>
+    <main>
       <section className='relative flex h-[30vh] w-full md:h-[50vh]'>
         <img
           className='left-0 top-0 h-full w-full object-cover'
@@ -58,13 +58,16 @@ function Home() {
               ))}
             </div>
           </div>
-          <Link to={'/shop'} className='border-2 px-10 py-2 text-mgold'>
+          <Link
+            to={'/shop'}
+            className='border-2 px-10 py-2 text-mgold transition-all hover:bg-mgold hover:text-mwhite'
+          >
             Show More
           </Link>
         </section>
       </Container>
       <ServiceInfo />
-    </>
+    </main>
   );
 }
 

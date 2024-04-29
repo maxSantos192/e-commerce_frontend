@@ -30,7 +30,7 @@ function CardCategory() {
           className='relative flex h-full max-h-[515px] min-h-[350px] w-full max-w-[360px] flex-none flex-col items-center justify-center'
         >
           <Link
-            to={`/product/category/${category.id}`}
+            to={`/shop/${category.id}`}
             className='block h-full w-full overflow-hidden rounded-lg'
           >
             <img

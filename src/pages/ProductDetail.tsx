@@ -7,6 +7,7 @@ import Rating from '@mui/material/Rating';
 import { FaFacebook, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import Container from '../components/Container';
 import CardProduct from '../components/CardProduct';
+import { useNavigate } from 'react-router-dom';
 
 function ProductDetail() {
   const [product, setProduct] = useState<ProductProps>();
@@ -16,6 +17,8 @@ function ProductDetail() {
   const [amount, setAmount] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState('');
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -52,8 +55,8 @@ function ProductDetail() {
   }, [id, limitItems]);
 
   function handleShowMore() {
-    if (limitItems === 8) {
-      return;
+    if (limitItems >= 8) {
+      navigate('/shop');
     }
     setLimitItems(limitItems * 2);
   }
@@ -63,11 +66,17 @@ function ProductDetail() {
       <div className='flex h-auto w-full bg-mfilter md:h-20'>
         <div className='mx-auto flex w-full max-w-7xl items-center justify-between p-4 px-8'>
           <div className='flex flex-row items-center justify-center gap-4 '>
-            <Link to={'/'} className='text-mline hover:text-mblack'>
+            <Link
+              to={'/'}
+              className='text-mline transition-all hover:text-mblack'
+            >
               Home
             </Link>
             <IoIosArrowForward />
-            <Link to={'/shop'} className='text-mline'>
+            <Link
+              to={'/shop'}
+              className='text-mline transition-all hover:text-mblack'
+            >
               Shop
             </Link>
             <IoIosArrowForward />
@@ -149,10 +158,10 @@ function ProductDetail() {
                   +
                 </button>
               </div>
-              <button className='rounded-xl border border-mblack px-5 py-3 text-xl'>
+              <button className='hover:bg-mbuy rounded-xl border border-mblack px-5 py-3 text-xl transition-all hover:border-mwhite hover:text-mwhite'>
                 Add To Cart
               </button>
-              <button className='rounded-xl border border-mblack px-5 py-3 text-xl'>
+              <button className='rounded-xl border border-mblack px-5 py-3 text-xl transition-all hover:border-mwhite hover:bg-mgold hover:text-mwhite'>
                 + Compare
               </button>
             </div>
@@ -201,25 +210,11 @@ function ProductDetail() {
         <div className='my-10 flex flex-col items-center justify-center gap-10'>
           <div className='flex gap-11'>
             <button className='text-2xl font-medium'>Description</button>
-            <button className='text-2xl font-medium'>
+            <button className='text-2xl font-medium text-mline transition-all hover:text-mblack'>
               Additional Information
             </button>
           </div>
-          <p className='text-mline'>
-            Embodying the raw, wayward spirit of rock ‘n’ roll, the Kilburn
-            portable active stereo speaker takes the unmistakable look and sound
-            of Marshall, unplugs the chords, and takes the show on the road.
-            <br />
-            <br />
-            Weighing in under 7 pounds, the Kilburn is a lightweight piece of
-            vintage styled engineering. Setting the bar as one of the loudest
-            speakers in its class, the Kilburn is a compact, stout-hearted hero
-            with a well-balanced audio which boasts a clear midrange and
-            extended highs for a sound that is both articulate and pronounced.
-            The analogue knobs allow you to fine tune the controls to your
-            personal preferences while the guitar-influenced leather strap
-            enables easy and stylish travel.
-          </p>
+          <p className='text-mline'>{product?.large_description}</p>
         </div>
 
         <div className='flex flex-col items-center justify-center gap-8 py-10'>
@@ -231,7 +226,7 @@ function ProductDetail() {
           </div>
 
           <button
-            className='border-2 px-10 py-2 text-mgold'
+            className='border-2 px-10 py-2 text-mgold transition-all hover:bg-mgold hover:text-mwhite'
             onClick={handleShowMore}
           >
             Show more

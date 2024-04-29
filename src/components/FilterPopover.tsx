@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import api from '../services/api'; // Ajuste o caminho conforme necessário
-import { CategoryProps } from '../types/categoryTypes'; // Ajuste o caminho conforme necessário
+import api from '../services/api';
+import { CategoryProps } from '../types/categoryTypes';
 import Checkbox from '@mui/material/Checkbox';
 
 interface FilterPopoverProps {

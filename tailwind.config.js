@@ -10,6 +10,7 @@ export default {
       'mwhite': '#FFFFFF',
       'mblack': '#000000',
       'mgreen': '#2EC1AC',
+      'mbuy': '#00db54',
       'mred': '#E97171',
       'mgold': '#B88E2F',
       'minfo': '#FAF3EA',

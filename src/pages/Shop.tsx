@@ -10,7 +10,7 @@ import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import FilterPopover from '../components/FilterPopover';
 
 function Shop() {
@@ -24,6 +24,14 @@ function Shop() {
   const [orderBy, setOrderBy] = useState('');
   const [isCol, setIsCol] = useState<boolean>(false);
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
+  const { categoryId } = useParams();
+  const numericCategoryId = categoryId ? parseInt(categoryId) : null;
+
+  useEffect(() => {
+    if (numericCategoryId) {
+      setCategoryIds([numericCategoryId]);
+    }
+  }, [numericCategoryId]);
 
   useEffect(() => {
     async function fecthData() {
@@ -46,10 +54,10 @@ function Shop() {
     fecthData();
   }, [page, categoryIds, limitItem, orderBy]);
 
-  const handleApplyCategories = (selectedCategories: number[]) => {
+  function handleApplyCategories(selectedCategories: number[]) {
     setCategoryIds(selectedCategories);
     setFilterOpen(false);
-  };
+  }
 
   function handlePageChange(event: any, value: number) {
     setPage(value);
@@ -98,7 +106,7 @@ function Shop() {
             <div className='flex'>
               <button
                 onClick={() => setFilterOpen(!filterOpen)}
-                className='flex items-center justify-center'
+                className='flex items-center justify-center rounded-md p-1 hover:border'
               >
                 <TbAdjustmentsHorizontal size={24} color='#000' />
                 <p className='ml-1'>Filter</p>
@@ -112,10 +120,16 @@ function Shop() {
               )}
             </div>
 
-            <button onClick={() => setIsCol(false)}>
+            <button
+              onClick={() => setIsCol(false)}
+              className='rounded-md p-1 hover:border'
+            >
               <PiCirclesFourFill size={24} color='#000' />
             </button>
-            <button onClick={() => setIsCol(true)}>
+            <button
+              onClick={() => setIsCol(true)}
+              className='rounded-md p-1 hover:border'
+            >
               <BsViewList size={24} color='#000' />
             </button>
             <div className='hidden h-9 w-[2px] bg-mline md:block'></div>
@@ -131,6 +145,7 @@ function Shop() {
               <option value={8}>8</option>
               <option value={4}>4</option>
             </select>
+
             <span className='text-sm md:text-base'>Sort by</span>
             <select
               value={orderBy}
@@ -147,7 +162,9 @@ function Shop() {
       </section>
 
       <section className='my-14 flex items-center justify-center'>
-        <div className='grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4'>
+        <div
+          className={`grid gap-8 ${isCol ? 'grid-cols-1' : 'md:grid-cols-2 xl:grid-cols-4'}`}
+        >
           {products.map(product => (
             <CardProduct key={product.id} {...product} />
           ))}

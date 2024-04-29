@@ -1,32 +1,29 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Fade as Hamburger } from 'hamburger-react';
-import furniroLogo from '../assets/furniro_logo.svg';
-import logo from '../assets/logo.svg';
 import {
   AiOutlineUser,
   AiOutlineSearch,
   AiOutlineHeart,
   AiOutlineShoppingCart,
 } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import furniroLogo from '../assets/furniro_logo.svg';
+import logo from '../assets/logo.svg';
 
-type MenuItem = {
+interface MenuItemProps {
   url: string;
   label: string;
-};
+}
 
-function Header() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const menuItems: MenuItem[] = [
-    { label: 'Home', url: '/' },
-    { label: 'Shop', url: '/shop' },
-    { label: 'About', url: '/about' },
-    { label: 'Contact', url: '/contact' },
-  ];
-
-  const navItem = (item: MenuItem, index: number) => (
-    <li key={`menu-item-${index}`} className='inline-block px-6'>
+function NavItem({
+  item,
+  className,
+}: {
+  item: MenuItemProps;
+  className?: string;
+}) {
+  return (
+    <li className={className}>
       <Link
         to={item.url}
         className='hover:text-zinc-600 text-base font-medium transition-all'
@@ -35,41 +32,60 @@ function Header() {
       </Link>
     </li>
   );
+}
+
+function IconNav() {
+  return (
+    <div className='hidden gap-8 md:flex'>
+      {[
+        AiOutlineUser,
+        AiOutlineSearch,
+        AiOutlineHeart,
+        AiOutlineShoppingCart,
+      ].map((Icon, index) => (
+        <Icon
+          key={`icon-${index}`}
+          size={22}
+          className='hover:text-zinc-600 cursor-pointer transition-all'
+        />
+      ))}
+    </div>
+  );
+}
+
+function Header() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const menuItems: MenuItemProps[] = [
+    { label: 'Home', url: '/' },
+    { label: 'Shop', url: '/shop' },
+    { label: 'About', url: '/about' },
+    { label: 'Contact', url: '/contact' },
+  ];
 
   return (
     <div className='flex h-16 w-full items-center justify-center'>
       <header className='relative flex w-full max-w-7xl items-center justify-between bg-mwhite px-8'>
-        <Link to={'/'} className='hidden cursor-pointer lg:block'>
+        <Link to='/' className='hidden cursor-pointer lg:block'>
           <img src={furniroLogo} alt='Funiro Logo' />
         </Link>
-        <Link to={'/'} className='z-30 cursor-pointer lg:hidden'>
+        <Link to='/' className='z-30 cursor-pointer lg:hidden'>
           <img src={logo} alt='Funiro Logo' />
         </Link>
 
         <nav className='hidden md:block'>
           <ul className='list-none'>
-            {menuItems.map((item, index) => navItem(item, index))}
+            {menuItems.map((item, index) => (
+              <NavItem
+                key={`menu-item-${index}`}
+                item={item}
+                className='inline-block px-6 transition-all hover:text-mgold'
+              />
+            ))}
           </ul>
         </nav>
 
-        <div className='hidden gap-8 md:flex'>
-          <AiOutlineUser
-            size={22}
-            className='hover:text-zinc-600 cursor-pointer transition-all'
-          />
-          <AiOutlineSearch
-            size={22}
-            className='hover:text-zinc-600 cursor-pointer transition-all'
-          />
-          <AiOutlineHeart
-            size={22}
-            className='hover:text-zinc-600 cursor-pointer transition-all'
-          />
-          <AiOutlineShoppingCart
-            size={22}
-            className='hover:text-zinc-600 cursor-pointer transition-all'
-          />
-        </div>
+        <IconNav />
 
         <div className='z-30 md:hidden'>
           <Hamburger color='#000' toggled={isOpen} toggle={setIsOpen} />
@@ -80,12 +96,11 @@ function Header() {
             <nav className='mt-20 h-4/5'>
               <ul className='flex flex-col gap-4'>
                 {menuItems.map((item, index) => (
-                  <li
+                  <NavItem
                     key={`mobile-menu-item-${index}`}
+                    item={item}
                     className='hover:bg-slate-100 flex h-16 items-center px-4 text-base font-medium hover:shadow'
-                  >
-                    <Link to={item.url}>{item.label}</Link>
-                  </li>
+                  />
                 ))}
               </ul>
             </nav>
